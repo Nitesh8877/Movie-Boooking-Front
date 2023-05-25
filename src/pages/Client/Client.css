@@ -1,0 +1,21 @@
+.client {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .client td, .client th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+ 
+  .client tr:hover {background-color:darkgrey;}
+  
+  .client th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #455650;
+    color: white;
+  }

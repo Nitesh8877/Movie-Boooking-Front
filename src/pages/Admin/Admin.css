@@ -1,0 +1,21 @@
+.admin {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .admin td, .admin th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+ 
+  .admin tr:hover {background-color:darkgrey;}
+  
+  .admin th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #455650;
+    color: white;
+  }
