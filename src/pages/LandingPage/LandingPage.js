@@ -30,21 +30,23 @@ const LandingPage = () => {
 
     return (
         !pageLoading ? (
-            <div>
+            <div className="bg-dark text-white min-vh-100">
                 <Navbar onSearchChange={selectedMovie} />
-                <div className='container mx-5 my-2'>
-                    <p className='fw-bloder'>Recommended Movies</p>
+                <div className='container py-4'>
+                    <h3 className='text-danger mb-4'>🔥 Recommended Movies</h3>
                     <div className='row'>
                         {
                             filteredMovies.length > 0 ? (
                                 filteredMovies.map((movie) => (
-                                    <div className="col-lg-3 col-xs-6 my-2" key={movie._id}>
-                                        <Link to={`/movie/${movie._id}/details`}>
-                                            <div className="d-flex align-items-stretch" style={{ height: '28rem' }}>
-                                                <div className="card bg-dark shadow-lg" style={{ width: '14rem' }}>
-                                                    <img src={movie.posterUrl} className="card-img-top" alt="..." style={{ height: '100%' }} />
-                                                    <i className="bi bi-hand-thumbs-up-fill text-success px-2">58k</i>
-                                                    <p className="text-white fw-bolder px-2">{movie.name}</p>
+                                    <div className="col-md-3 col-sm-6 col-12 mb-4" key={movie._id}>
+                                        <Link to={`/movie/${movie._id}/details`} className='text-decoration-none'>
+                                            <div className="card bg-black border border-danger h-100 shadow-sm">
+                                                <img src={movie.posterUrl} className="card-img-top" alt={movie.name} style={{ height: '18rem', objectFit: 'cover' }} />
+                                                <div className="card-body text-white">
+                                                    <h6 className="card-title">{movie.name}</h6>
+                                                    <p className="card-text">
+                                                        <i className="bi bi-hand-thumbs-up-fill text-success me-2"></i>58k Likes
+                                                    </p>
                                                 </div>
                                             </div>
                                         </Link>
@@ -57,7 +59,7 @@ const LandingPage = () => {
                     </div>
                 </div>
             </div>
-        ) : <div>Fetching Movies from backend ...</div>
+        ) : <div className="text-center text-white py-5">🎥 Fetching movies from backend...</div>
     )
 }
 
