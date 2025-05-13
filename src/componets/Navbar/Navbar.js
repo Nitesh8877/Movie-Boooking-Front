@@ -20,7 +20,7 @@ const Navbar = (props) => {
                 </div>
                 <div className='col-lg-8 col-sm-8 py-2'>
                     <SuggestionInputSearch
-                        onSubmitFunction={props.onMovieSelect}
+                        onChangeFunction={props.onSearchChange} // ✅ live search
                         recentSearches={props.movies}
                         placeholder='Search for Movie ...'
                     />
