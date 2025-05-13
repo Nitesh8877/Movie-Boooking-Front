@@ -16,6 +16,7 @@ const LandingPage = () => {
     }
 
     const selectedMovie = (searchText) => {
+        console.log(searchText,1111);
         if (searchText.trim() === '') {
             // If search input is cleared, show all movies
             setFilteredMovies(movieList)
