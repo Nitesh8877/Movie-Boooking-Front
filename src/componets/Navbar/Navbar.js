@@ -1,9 +1,16 @@
 import { CButton } from '@coreui/react'
-import SuggestionInputSearch from 'suggestion-react-input-search'
 import { useNavigate, Link } from 'react-router-dom'
+import { useState } from 'react'
 
 const Navbar = (props) => {
     const navigate = useNavigate()
+    const [searchText, setSearchText] = useState('')
+
+    const handleChange = (e) => {
+        const value = e.target.value
+        setSearchText(value)
+        props.onSearchChange(value) // Call parent's filter
+    }
 
     function logout() {
         localStorage.clear()
@@ -19,10 +26,12 @@ const Navbar = (props) => {
                     </Link>
                 </div>
                 <div className='col-lg-8 col-sm-8 py-2'>
-                    <SuggestionInputSearch
-                        onChangeFunction={props.onSearchChange} // ✅ live search
-                        recentSearches={props.movies}
-                        placeholder='Search for Movie ...'
+                    <input
+                        type="text"
+                        value={searchText}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="Search for Movie..."
                     />
                 </div>
                 <div className='col-lg-2 col-sm-4'>
