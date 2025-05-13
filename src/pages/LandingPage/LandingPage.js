@@ -16,10 +16,16 @@ const LandingPage = () => {
     }
 
     const selectedMovie = (searchText) => {
-        const filtered = movieList.filter((movie) =>
-            movie.name.toLowerCase().includes(searchText.toLowerCase())
-        )
-        setFilteredMovies(filtered)
+        if (searchText.trim() === '') {
+            // If search input is cleared, show all movies
+            setFilteredMovies(movieList)
+        } else {
+            // Filter matching movies
+            const filtered = movieList.filter((movie) =>
+                movie.name.toLowerCase().includes(searchText.toLowerCase())
+            )
+            setFilteredMovies(filtered)
+        }
     }
 
     useEffect(() => { init() }, [])
