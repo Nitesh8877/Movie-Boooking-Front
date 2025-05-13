@@ -16,12 +16,9 @@ const LandingPage = () => {
     }
 
     const selectedMovie = (searchText) => {
-        console.log(searchText,1111);
         if (searchText.trim() === '') {
-            // If search input is cleared, show all movies
             setFilteredMovies(movieList)
         } else {
-            // Filter matching movies
             const filtered = movieList.filter((movie) =>
                 movie.name.toLowerCase().includes(searchText.toLowerCase())
             )
@@ -34,7 +31,7 @@ const LandingPage = () => {
     return (
         !pageLoading ? (
             <div>
-                <Navbar movies={movieList.map((movie) => movie.name)} onMovieSelect={selectedMovie} />
+                <Navbar movies={movieList.map((movie) => movie.name)} onSearchChange={selectedMovie} />
                 <div className='container mx-5 my-2'>
                     <p className='fw-bloder'>Recommended Movies</p>
                     <div className='row'>
