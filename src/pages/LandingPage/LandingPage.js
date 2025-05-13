@@ -31,7 +31,7 @@ const LandingPage = () => {
     return (
         !pageLoading ? (
             <div>
-                <Navbar movies={movieList.map((movie) => movie.name)} onSearchChange={selectedMovie} />
+                <Navbar onSearchChange={selectedMovie} />
                 <div className='container mx-5 my-2'>
                     <p className='fw-bloder'>Recommended Movies</p>
                     <div className='row'>
