@@ -1,66 +1,110 @@
 import React, { useEffect, useState } from 'react'
-import { getAllMovies } from '../../api/movie'
 import Navbar from '../../componets/Navbar/Navbar'
-import { Link } from 'react-router-dom'
+import ReactPlayer from 'react-player'
+import { useParams, Link } from 'react-router-dom'
+import { getMoviesById } from '../../api/movie/index'
+import { getAllTheaters } from '../../api/theatre/index'
 
-const LandingPage = () => {
-    const [movieList, setMovieList] = useState([])
-    const [filteredMovies, setFilteredMovies] = useState([])
-    const [pageLoading, setPageLoading] = useState(true)
+const MovieDetails = () => {
+
+    const { movieid: id } = useParams()
+    const [selectedMovie, setSelectedMovie] = useState(id)
+    const [movieDetails, setMovieDetails] = useState({})
+    const [releaseStatus, setMovieReleaseStatus] = useState(false)
+    const [movieCast, setMovieCast] = useState([])
+    const [isLoggedin, setLoggedin] = useState(false)
 
     const init = async () => {
-        const result = await getAllMovies()
-        setMovieList(result.data)
-        setFilteredMovies(result.data)
-        setPageLoading(false)
-    }
-
-    const selectedMovie = (searchText) => {
-        if (searchText.trim() === '') {
-            setFilteredMovies(movieList)
-        } else {
-            const filtered = movieList.filter((movie) =>
-                movie.name.toLowerCase().includes(searchText.toLowerCase())
-            )
-            setFilteredMovies(filtered)
+        try {
+            const results = await getAllTheaters()
+            if (results) {
+                setLoggedin(true)
+            }
+        } catch (error) {
+            setLoggedin(false)
         }
+        const response = await getMoviesById(selectedMovie)
+        setMovieDetails(response.data[0])
+        setMovieReleaseStatus(response.data[0].releaseStatus === 'RELEASED')
+        setMovieCast(response.data[0].casts)
     }
 
-    useEffect(() => { init() }, [])
+    useEffect(() => {
+        init()
+    }, [])
 
     return (
-        !pageLoading ? (
-            <div className="bg-dark text-white min-vh-100">
-                <Navbar onSearchChange={selectedMovie} />
-                <div className='container py-4'>
-                    <h3 className='text-danger mb-4'>🔥 Recommended Movies</h3>
-                    <div className='row'>
-                        {
-                            filteredMovies.length > 0 ? (
-                                filteredMovies.map((movie) => (
-                                    <div className="col-md-3 col-sm-6 col-12 mb-4" key={movie._id}>
-                                        <Link to={`/movie/${movie._id}/details`} className='text-decoration-none'>
-                                            <div className="card bg-black border border-danger h-100 shadow-sm">
-                                                <img src={movie.posterUrl} className="card-img-top" alt={movie.name} style={{ height: '18rem', objectFit: 'cover' }} />
-                                                <div className="card-body text-white">
-                                                    <h6 className="card-title">{movie.name}</h6>
-                                                    <p className="card-text">
-                                                        <i className="bi bi-hand-thumbs-up-fill text-success me-2"></i>58k Likes
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="text-white px-2">No movies found.</div>
-                            )
-                        }
+        <>
+            <Navbar />
+            <div className="bg-dark text-white">
+                <div className="container py-4">
+                    {/* Trailer Section */}
+                    <div className="mb-4">
+                        <ReactPlayer
+                            url={movieDetails.trailerUrl}
+                            controls={true}
+                            width="100%"
+                            height="350px"
+                            className="shadow-lg rounded"
+                        />
+                    </div>
+
+                    <div className="row">
+                        {/* Movie Poster */}
+                        <div className="col-lg-4 col-md-6 mb-4 text-center">
+                            <img
+                                src={movieDetails.posterUrl}
+                                alt={movieDetails.name}
+                                className="img-fluid rounded shadow-lg"
+                                style={{ maxHeight: '450px', objectFit: 'cover' }}
+                            />
+                        </div>
+
+                        {/* Movie Information */}
+                        <div className="col-lg-8 col-md-6">
+                            <h2 className="fw-bold">{movieDetails.name}</h2>
+                            <p className="text-muted">{movieDetails.description}</p>
+                            <div className="d-flex flex-wrap mb-3">
+                                <span className="badge bg-danger m-1">{movieDetails.language}</span>
+                                <span className="badge bg-secondary m-1">{movieDetails.releaseStatus}</span>
+                            </div>
+
+                            <div>
+                                <h5 className="fw-semibold">Director: {movieDetails.director}</h5>
+                                <h5 className="fw-semibold">Release Date: {movieDetails.releaseDate}</h5>
+                            </div>
+
+                            {/* Cast List */}
+                            <div className="my-3">
+                                <h5 className="fw-semibold">Cast:</h5>
+                                <ul className="list-group">
+                                    {movieCast.map((name, index) => (
+                                        <li key={index} className="list-group-item bg-dark text-white border-0">
+                                            {name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* Booking Button */}
+                            <div className="text-center my-4">
+                                {isLoggedin ? (
+                                    <Link
+                                        to={releaseStatus ? `/buytickets/${movieDetails.name}/${selectedMovie}` : '#'}
+                                        className={`btn btn-lg ${releaseStatus ? 'btn-success' : 'btn-secondary'} text-white`}
+                                    >
+                                        {releaseStatus ? 'BOOK TICKET' : 'COMING SOON'}
+                                    </Link>
+                                ) : (
+                                    <p className="text-warning">Please login to book tickets.</p>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        ) : <div className="text-center text-white py-5">🎥 Fetching movies from backend...</div>
+        </>
     )
 }
 
-export default LandingPage
+export default MovieDetails
