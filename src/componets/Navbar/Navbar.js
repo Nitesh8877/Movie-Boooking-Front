@@ -9,7 +9,7 @@ const Navbar = (props) => {
     const handleChange = (e) => {
         const value = e.target.value
         setSearchText(value)
-        props.onSearchChange(value) // Call parent's filter
+        props.onSearchChange(value)
     }
 
     function logout() {
@@ -18,30 +18,29 @@ const Navbar = (props) => {
     }
 
     return (
-        <div className='bg-dark px-2'>
-            <div className='row text-center'>
-                <div className='col-lg-2 col-sm-12'>
-                    <Link to="/">
-                        <div className='display-6 text-danger py-1'>MBA</div>
-                    </Link>
-                </div>
-                <div className='col-lg-8 col-sm-8 py-2'>
+        <div className='bg-black py-3 shadow-sm'>
+            <div className='container-fluid d-flex flex-wrap justify-content-between align-items-center'>
+                <Link to="/" className="text-decoration-none">
+                    <h2 className='text-danger fw-bold m-0 px-3'>🎬 MBA Movies</h2>
+                </Link>
+                <div className='flex-grow-1 px-3 py-2'>
                     <input
                         type="text"
                         value={searchText}
                         onChange={handleChange}
-                        className="form-control"
-                        placeholder="Search for Movie..."
+                        className="form-control rounded-pill shadow-sm"
+                        placeholder="Search for a movie..."
+                        style={{ paddingLeft: "1.5rem", fontSize: "1rem" }}
                     />
                 </div>
-                <div className='col-lg-2 col-sm-4'>
+                <div className='px-3'>
                     {
                         localStorage.getItem('username') === null ? (
-                            <CButton type='submit' color='danger' className='px-3' onClick={() => navigate('/login')}>
+                            <CButton color='danger' className='rounded-pill px-4' onClick={() => navigate('/login')}>
                                 Login
                             </CButton>
                         ) : (
-                            <CButton className="bg-danger col-lg-4 col-sm-4" onClick={logout}>
+                            <CButton color='danger' className='rounded-pill px-4' onClick={logout}>
                                 Logout
                             </CButton>
                         )
