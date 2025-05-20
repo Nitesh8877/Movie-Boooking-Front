@@ -13,4 +13,4 @@
 // export { API_BASE_URL, TIMEOUT }
 
 export const API_BASE_URL="https://bookmyshow-t76i.onrender.com"
-export const TIMEOUT=8000
+export const TIMEOUT=1000
